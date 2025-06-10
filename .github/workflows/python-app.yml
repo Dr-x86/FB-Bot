@@ -28,4 +28,5 @@ jobs:
           API_KEY: ${{ secrets.API_KEY }}
           TOKEN: ${{ secrets.TOKEN }}
           FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
         run: python main.py
