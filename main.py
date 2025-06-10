@@ -1,12 +1,17 @@
 import requests
-import os
 import random
 import animemes
 import sfw
 import ia
 import notify
+from dotenv import load_dotenv
+import os
 
-access_token=os.getenv("FB_ACCESS_TOKEN")
+load_dotenv()
+ACCESS_TOKEN = os.getenv("FB_ACCESS_TOKEN")
+API_KEY=os.getenv("API_KEY")
+CHAT_ID=os.getenv("CHAT_ID")
+TOKEN=os.getenv("TOKEN")
 
 def subirPost(urlPhoto,caption):
     page_id = '595985150275800'
@@ -14,7 +19,7 @@ def subirPost(urlPhoto,caption):
     
     data = {
         'caption': caption,
-        'access_token': access_token,
+        'access_token': ACCESS_TOKEN,
         'url':f'{urlPhoto}'
     }
     response = requests.post(url, data=data)
@@ -52,28 +57,28 @@ def agregar(url):
 if __name__ == "__main__":
     post=random.randint(1,500)
     
-    if(post <= -5): # Toca Waifu
+    if(post <= 200): # Toca Waifu
         print("Toca Waifu")
         url = obtenerUrlWaifu()
         if(url == '0'):
-            notify.mandarMensaje("Error API de imagenes")
+            notify.mandarMensaje(CHAT_ID,TOKEN,"Error API de imagenes")
             url=""
-        response = ia.solicitarTexto()
+        response = ia.solicitarTexto(API_KEY)
         if(not response.ok):
-            notify.mandarMensaje(f"Error Detalles fayo la IA {response.text}")
+            notify.mandarMensaje(CHAT_ID,TOKEN,f"Error Detalles fayo la IA {response.text}")
         texto=response.json()['candidates'][0]['content']['parts'][0]['text']
         
         
         print(f"URL: {url} \nTexto:{texto}")
-        #respuestaFB=subirPost(url,texto)
-        #notify.mandarMensaje(f"Post: {respuestaFB}")
+        respuestaFB=subirPost(url,texto)
+        notify.mandarMensaje(CHAT_ID,TOKEN,f"El bot subio el post: {respuestaFB.json()}")
         agregar(url)
-        
-    else:  #Toca Meme
+    
+    else:  # Toca Meme
         print("toca meme")
         url,titulo=obtenerUrlMeme()
         print(f"URL: {url} \nTexto:{titulo}")
         
-        #respuestaFB=subirPost(url,titulo)
-        #notify.mandarMensaje(f"Post: {respuestaFB}")
+        respuestaFB=subirPost(url,titulo)
+        notify.mandarMensaje(CHAT_ID,TOKEN,f"El bot subio el post: {respuestaFB.json()}")
         agregar(url)
