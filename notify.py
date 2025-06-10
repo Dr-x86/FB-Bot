@@ -1,7 +1,7 @@
 import requests
 import os
 
-TOKEN=os.setenv("TOKEN_TELEGRAM")
+TOKEN=os.setenv("TOKEN")
 CHAT_ID=os.setenv("CHAT_ID")
 
 
