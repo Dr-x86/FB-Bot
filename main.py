@@ -13,8 +13,9 @@ API_KEY=os.getenv("API_KEY")
 CHAT_ID=os.getenv("CHAT_ID")
 TOKEN=os.getenv("TOKEN")
 
+page_id = '595985150275800'
+
 def subirPost(urlPhoto,caption):
-    page_id = '595985150275800'
     url = f'https://graph.facebook.com/{page_id}/photos'
     
     data = {
@@ -71,7 +72,7 @@ if __name__ == "__main__":
         
         print(f"URL: {url} \nTexto:{texto}")
         respuestaFB=subirPost(url,texto)
-        notify.mandarMensaje(CHAT_ID,TOKEN,f"El bot subio el post: {respuestaFB.json()}")
+        notify.mandarMensaje(CHAT_ID,TOKEN,f"El bot subio el post https://facebook.com/{page_id}/posts/{respuestaFB.json()['id']}")
         agregar(url)
     
     else:  # Toca Meme
@@ -80,5 +81,5 @@ if __name__ == "__main__":
         print(f"URL: {url} \nTexto:{titulo}")
         
         respuestaFB=subirPost(url,titulo)
-        notify.mandarMensaje(CHAT_ID,TOKEN,f"El bot subio el post: {respuestaFB.json()}")
+        notify.mandarMensaje(CHAT_ID,TOKEN,f"El bot subio el post https://facebook.com/{page_id}/posts/{respuestaFB.json()['id']}")
         agregar(url)
