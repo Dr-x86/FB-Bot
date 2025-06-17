@@ -6,4 +6,4 @@ def obtener_meme():
     if respuesta.status_code == 200:
         meme = respuesta.json()
         return (meme['url'],meme['title'])
-    return ("None","0")
+    return ("None","None")

@@ -124,7 +124,8 @@ if __name__ == "__main__":
     if(post >=4 and post <= 6):
         print("Memes selected")
         url,titulo=obtenerUrlMeme()
-        post_id=subirPost(url,titulo)
+        # Just in case no Title at the moment
+        post_id=subirPost(url)
         if(post_id!=None):
             comentar(post_id)
         
