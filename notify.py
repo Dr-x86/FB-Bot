@@ -1,10 +1,12 @@
 import requests
 import os
+from dotenv import load_dotenv
 
-TOKEN=os.getenv("TOKEN")
-CHAT_ID=os.getenv("CHAT_ID")
+load_dotenv()
+CHAT_ID=os.getenv("PERSONAL_CHAT_ID")
+TOKEN=os.getenv("BOT_TOKEN")
 
-def mandarMensaje(CHAT_ID,TOKEN,msg):
+def mandarMensaje(msg):
     URL = f"https://api.telegram.org/bot{TOKEN}/sendMessage"    
     parametros = {
         "chat_id": CHAT_ID,
@@ -12,4 +14,3 @@ def mandarMensaje(CHAT_ID,TOKEN,msg):
         "parse_mode": "Markdown"
     }
     respuesta = requests.post(URL, data=parametros)
-

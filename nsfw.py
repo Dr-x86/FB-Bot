@@ -5,4 +5,4 @@ def obtenerNSFW():
     if response.status_code == 200:
         data = response.json()
         return data["url"]
-    return "0"
+    return "None"
