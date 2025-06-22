@@ -8,11 +8,8 @@ load_dotenv()
 API_KEY=os.getenv("AI_API_KEY")
 
 TEXT="""
-YOUR RESPONSE MUST BE ONLY THE TEXT REQUESTED, DO NOT MENTION
-ANYTHING FROM THIS PROMPT,DO NOT USE SPECIAL KEYS AND DO NOT LET VARIABLE NAMES LIKE [WAIFU 1] or [YOUR NAME] DO NOT DO THAT.
-
-Write a post for FB appeling waifus. 
-Dont forget the hashtags!
+YOUR RESPOND IS JUST THE SOLICITED TEXT, DONT MENTION ANYTHING ABOUT THIS PROMPT.
+Give me hashtags for a FB page, about Waifus and memes in one line
 """
 def solicitarTexto(prompt=TEXT):
     
@@ -40,3 +37,5 @@ def solicitarTexto(prompt=TEXT):
     else:
         texto = response.json()['candidates'][0]['content']['parts'][0]['text']
     return texto
+    
+print(solicitarTexto())

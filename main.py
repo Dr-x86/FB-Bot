@@ -1,14 +1,12 @@
 import requests
 import random
-import animemes
 import ia
 import notify
 import os
-import sfw
-from dotenv import load_dotenv
+import apis
 from supabase import create_client, Client
 from time import sleep
-import group
+from dotenv import load_dotenv
 
 load_dotenv()
 ACCESS_BOT_TOKEN = os.getenv("FB_ACCESS_TOKEN")
@@ -17,7 +15,7 @@ DATABASE = os.getenv("SUPABASE_DB")
 page_id = '595985150275800'
 
 ## INITIALIZE CLIENT FOR DB
-supabase: Client = create_client(DATABASE, SUPA_BASE_KEY)
+Client = create_client(DATABASE, SUPA_BASE_KEY)
 
 def subirPost(urlPhoto,caption=""):
     url = f'https://graph.facebook.com/{page_id}/photos'
@@ -30,18 +28,22 @@ def subirPost(urlPhoto,caption=""):
     response = requests.post(url, data=data)
     
     if response.status_code == 200:
-        notify.mandarMensaje(f"El bot subio el post https://facebook.com/{page_id}/posts/{response.json()['id']}")
+        notify.Me(f"El bot subio el post https://facebook.com/{page_id}/posts/{response.json()['id']}")
         return response.json()['id']
     else:
-        notify.mandarMensaje(f"Error al subir post {response.json()}")
+        notify.Me(f"Error al subir post {response.json()}")
     return None
 
 
 def comentar(post_id,highLight=False):
+    customPrompt="""
+    YOUR RESPOND IS JUST THE SOLICITED TEXT, DONT MENTION ANYTHING ABOUT THIS PROMPT.
+    Gimme a brainrot gen z phrase, dont care if it has sense or not, memes or waifus that's the topic.
+    """
     if(highLight):
-        mensaje = "@highlight @followers"
+        mensaje = "@highlight"
     else:
-        mensaje = "Join us at Telegram for more NSFW Waifus content, give us a feedback!! " + "https://t.me/+G7bxJxH8Ul8zNGMx"
+        mensaje = ia.solicitarTexto(customPrompt)
     
     url = f'https://graph.facebook.com/{post_id}/comments'
 
@@ -52,9 +54,8 @@ def comentar(post_id,highLight=False):
     
     response = requests.post(url, data=params)
     if(response.status_code!=200):
-        notify.mandarMensaje(f"Error al comentar: {response.json()}")
-
-
+        notify.Me(f"Error al comentar: {response.json()}")
+        
 def agregar(url,setUrl):
     insert_response = supabase.table(f'{setUrl}').insert({'url': url}).execute()
     return True if insert_response.data else False
@@ -63,83 +64,106 @@ def verify(url,setUrl):
     response = supabase.table(f'{setUrl}').select('id').eq('url', url).execute()
     return True if response.data else False
 
-def obtenerUrlWaifu(max_intentos=4000):
-    setDB='set_waifus'
+def waifu(max_intentos=4000):
+    setDB = 'set_waifus'
     intentos = 0
-    
+
     while intentos < max_intentos:
-        url = sfw.obtener_waifu()
-        if not verify(url,setDB):
-            return url
-        intentos+=1
+        url = apis.obtener_waifu()
+        
+        if not url or not isinstance(url, str):
+            notify.Me(f"URL inválida obtenida: {url}, intento {intentos}")
+            intentos += 1
+            continue
+
+        try:
+            if not verify(url, setDB):
+                return url
+        except Exception as e:
+            notify.Me(f"Error al verificar URL en BD: {url}, error: {e}")
+
+        intentos += 1
+        
+    notify.Me("⚠️ Posiblemente se han terminado las imágenes de la API Waifu. Reposteando una repetida...")
+    # Intentar al menos retornar algo, aunque sea repetido
+    url = apis.obtener_waifu()
+    return url if url else "None"
     
-    ### EL EXPLOTADOR MUAJAJAJA
-    notify.mandarMensaje("Posiblemente se han terminado las imagenes de la API Waifu, reposteando ...")    
-    url = sfw.obtener_waifu()
-    return url
-    
-def obtenerUrlMeme(max_intentos=4000):
+def meme(max_intentos=4000):
     setDB = 'set_memes'
     intentos = 0
-    while intentos < max_intentos:
-        url, t = animemes.obtener_meme()
-        if not verify(url, setDB):
-            return (url, t)        
-        intentos += 1
-    
-    # No hay memes nuevos disponibles toca repostear lol
-    notify.mandarMensaje("Posiblemente se han terminado las imagenes de la API Momazos, reposteando ...")
-    url, t = animemes.obtener_meme()
-    return (url, t)
 
-#Specific set of urls for followers
-def target(max_intentos=4000):
-    setDB='set_waifus'
-    intentos = 0
-    
     while intentos < max_intentos:
-        url = sfw.solicitar_waifu()
-        if not verify(url,setDB):
-            return url
-        intentos+=1
-    ### EL EXPLOTADOR MUAJAJAJA
-    notify.mandarMensaje("Posiblemente se han terminado las imagenes de la API Waifu 2, reposteando ...")    
-    url = sfw.solicitar_waifu()
-    return url
+        try:
+            url, t = apis.obtener_meme()
+        except Exception as e:
+            notify.Me(f"Error al obtener meme: {e}")
+            intentos += 1
+            continue
+
+        if not url or not isinstance(url, str):
+            notify.Me(f"Meme inválido en intento {intentos}: {url}")
+            intentos += 1
+            continue
+
+        try:
+            if not verify(url, setDB):
+                return (url, t)
+        except Exception as e:
+            notify.Me(f"Error al verificar meme en BD: {e}")
+
+        intentos += 1
+
+    notify.Me("⚠️ Se agotaron los memes nuevos. Reposteando uno repetido...")
+    try:
+        return apis.obtener_meme()
+    except:
+        return ("None", "None")
+
+def target(max_intentos=4000):
+    setDB = 'set_waifus'
+    intentos = 0
+
+    while intentos < max_intentos:
+        try:
+            url = apis.solicitar_waifu()
+        except Exception as e:
+            notify.Me(f"Error solicitando waifu específica: {e}")
+            intentos += 1
+            continue
+
+        if not url or not isinstance(url, str):
+            notify.Me(f"URL inválida en intento {intentos}: {url}")
+            intentos += 1
+            continue
+
+        try:
+            if not verify(url, setDB):
+                return url
+        except Exception as e:
+            notify.Me(f"Error al verificar URL waifu 2: {e}")
+
+        intentos += 1
+
+    notify.Me("⚠️ Se agotaron las waifus nuevas (API 2). Reposteando una repetida...")
+    
+    url = apis.solicitar_waifu()
+    return url if url else "None"
+
 
 if __name__ == "__main__":
-    post=random.randint(1,10)
+    numero=random.randint(1,10)
     
-    if(post <= 3): # Toca Waifu
-        print("Waifus selected")
-        url = obtenerUrlWaifu()
-        texto=ia.solicitarTexto()
-        post_id=subirPost(url,texto)
-        
-        if(post_id!=None):
-            comentar(post_id)
-        
-        agregar(url,'set_waifus')
-            
-    if(post >=4 and post <= 6):
-        print("Memes selected")
-        url,titulo=obtenerUrlMeme()
-        # Just in case no Title at the moment
+    if(numero <= 3):
+        url = waifu()
         post_id=subirPost(url)
-        if(post_id!=None):
-            comentar(post_id)
-        
-        agregar(url,'set_memes')
-    
-    if(post >= 7 and post <= 10):
-        print("Target selected")
-        url = target()
-        post_id = subirPost(url)
-        if(post_id!=None):
-            comentar(post_id,highLight=True)
-            
-        agregar(url,'set_waifus')
         comentar(post_id)
+        
+    if(numero >=4 and numero <= 6):
+        pass
+        
+    if(numero >= 7 and numero <= 10):
+        pass
     
-    sleep(7)
-    group.notifyGroup()
+    sleep(5)
+    notify.Channel()
