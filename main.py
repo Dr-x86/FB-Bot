@@ -152,7 +152,7 @@ def target(max_intentos=4000):
 
 
 if __name__ == "__main__":
-    numero=random.randint(1,12)
+    numero=random.randint(1,13)
     if(numero <= 3):
         print("Waifu")
         url = waifu()
@@ -165,7 +165,7 @@ if __name__ == "__main__":
         notify.Channel(url)
         # pass
         
-    if(numero >= 4 and numero <= 7):
+    if(numero >= 4 and numero <= 10):
         print("Meme")
         titulo,url = meme()
         post_id = subirPost(url,titulo)
@@ -177,7 +177,7 @@ if __name__ == "__main__":
         notify.Channel(url,titulo)
         # pass
         
-    if(numero >= 8 and numero <= 12):
+    if(numero >= 10 and numero <= 13):
         print("Target")
         url = target()
         post_id=subirPost(url)
