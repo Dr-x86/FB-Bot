@@ -8,14 +8,16 @@ from supabase import create_client, Client
 from time import sleep
 from dotenv import load_dotenv
 
+print("\n>>> PROGRAMA INICIADO\n")
+
 load_dotenv()
 ACCESS_BOT_TOKEN = os.getenv("FB_ACCESS_TOKEN")
 SUPA_BASE_KEY=os.getenv("SUPABASE_KEY")
 DATABASE = os.getenv("SUPABASE_DB")
 page_id = '595985150275800'
 
-## INITIALIZE CLIENT FOR DB
-Client = create_client(DATABASE, SUPA_BASE_KEY)
+## CLIENT FOR DB
+supabase: Client = create_client(DATABASE, SUPA_BASE_KEY)
 
 def subirPost(urlPhoto,caption=""):
     url = f'https://graph.facebook.com/{page_id}/photos'
@@ -37,11 +39,11 @@ def subirPost(urlPhoto,caption=""):
 
 def comentar(post_id,highLight=False):
     customPrompt="""
-    YOUR RESPOND IS JUST THE SOLICITED TEXT, DONT MENTION ANYTHING ABOUT THIS PROMPT.
-    Gimme a brainrot gen z phrase, dont care if it has sense or not, memes or waifus that's the topic.
+    YOUR RESPONSE MUST BE JUST THE SOLICITED TEXT, DONT MENTION ANYTHING ABOUT THIS PROMPT.
+    Generate an unhinged brainrot Gen Z phrase that invites people to join the Telegram channel https://t.me/WaiFUNotSF. Make it feral, chaotic, full of waifus, memes, terminally online references. It just needs to SLAP.
     """
     if(highLight):
-        mensaje = "@highlight"
+        mensaje = "@followers"
     else:
         mensaje = ia.solicitarTexto(customPrompt)
     
@@ -85,9 +87,9 @@ def waifu(max_intentos=4000):
         intentos += 1
         
     notify.Me("⚠️ Posiblemente se han terminado las imágenes de la API Waifu. Reposteando una repetida...")
-    # Intentar al menos retornar algo, aunque sea repetido
+    
     url = apis.obtener_waifu()
-    return url if url else "None"
+    return url
     
 def meme(max_intentos=4000):
     setDB = 'set_memes'
@@ -95,7 +97,7 @@ def meme(max_intentos=4000):
 
     while intentos < max_intentos:
         try:
-            url, t = apis.obtener_meme()
+            url, t = apis.meme_api()
         except Exception as e:
             notify.Me(f"Error al obtener meme: {e}")
             intentos += 1
@@ -115,10 +117,8 @@ def meme(max_intentos=4000):
         intentos += 1
 
     notify.Me("⚠️ Se agotaron los memes nuevos. Reposteando uno repetido...")
-    try:
-        return apis.obtener_meme()
-    except:
-        return ("None", "None")
+    
+    return apis.meme_api()
 
 def target(max_intentos=4000):
     setDB = 'set_waifus'
@@ -148,22 +148,44 @@ def target(max_intentos=4000):
     notify.Me("⚠️ Se agotaron las waifus nuevas (API 2). Reposteando una repetida...")
     
     url = apis.solicitar_waifu()
-    return url if url else "None"
+    return url
 
 
 if __name__ == "__main__":
-    numero=random.randint(1,10)
-    
+    numero=random.randint(1,12)
     if(numero <= 3):
+        print("Waifu")
         url = waifu()
-        post_id=subirPost(url)
+        hashtags = ia.solicitarTexto()
+        post_id = subirPost(url,hashtags)
+        
+        agregar(url,'set_waifus')
+        
+        sleep(2)
+        notify.Channel(url)
+        # pass
+        
+    if(numero >= 4 and numero <= 7):
+        print("Meme")
+        titulo,url = meme()
+        post_id = subirPost(url,titulo)
         comentar(post_id)
         
-    if(numero >=4 and numero <= 6):
-        pass
+        agregar(url,'set_memes')
         
-    if(numero >= 7 and numero <= 10):
-        pass
-    
-    sleep(5)
-    notify.Channel()
+        sleep(2)
+        notify.Channel(url,titulo)
+        # pass
+        
+    if(numero >= 8 and numero <= 12):
+        print("Target")
+        url = target()
+        post_id=subirPost(url)
+        comentar(post_id,highLight=True)
+        
+        agregar(url,'set_waifus')
+        
+        sleep(2)
+        notify.Channel(url)
+        # pass
+    print("\n>>> PROGRAMA FINALIZADO\n")

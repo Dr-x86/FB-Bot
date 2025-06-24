@@ -9,7 +9,7 @@ API_KEY=os.getenv("AI_API_KEY")
 
 TEXT="""
 YOUR RESPOND IS JUST THE SOLICITED TEXT, DONT MENTION ANYTHING ABOUT THIS PROMPT.
-Give me hashtags for a FB page, about Waifus and memes in one line
+Give me hashtags for a FB page, about Waifus and memes in one line only 3
 """
 def solicitarTexto(prompt=TEXT):
     
@@ -38,4 +38,3 @@ def solicitarTexto(prompt=TEXT):
         texto = response.json()['candidates'][0]['content']['parts'][0]['text']
     return texto
     
-print(solicitarTexto())

@@ -1,5 +1,8 @@
 import requests
 import notify
+import random
+
+# print(">>> SCRIPT INICIADO")
 
 def obtener_waifu(respaldo=False):
     url = "https://api.waifu.pics/sfw/waifu"
@@ -39,13 +42,29 @@ def obtenerNSFW():
         
 ################################################ LADO DE LOS MOMOS ######################################
 
-def obtener_meme(sub):
-    url = f'https://meme-api.com/gimme/{sub}'
+def meme_api():
+    sources = ["hatsunemiku","kasaneteto","frieren"]
+    subreddit=random.choice(sources)
+    
+    url = f"https://meme-api.com/gimme/{subreddit}"
     try:
-        respuesta = requests.get(url)
-        respuesta.raise_for_status()
-        meme = respuesta.json()
-        return (meme['url'],meme['title'])
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        data = response.json()
+        title = data.get('title')
+        meme_url = data.get('url')
+        
+        if(not title or not url):
+            return None, None
+        
+        return title, meme_url
+        
+    except requests.exceptions.RequestException as req_err:
+        notify.Me(f"Error de red o HTTP: {req_err}")
+    except ValueError:
+        notify.Me("Error al decodificar JSON.")
     except Exception as e:
-        notify.Me(f"Error en la API {url}: {e}\nMomos :(")
-        return ("None","None")
+        notify.Me(f"Error inesperado: {e}")
+    
+    return None,None

@@ -1,7 +1,6 @@
 import requests
 import os
 from dotenv import load_dotenv
-from apis import obtenerNSFW
 
 load_dotenv()
 CHAT_ID=os.getenv("PERSONAL_CHAT_ID")
@@ -17,13 +16,13 @@ def Me(msg):
     }
     respuesta = requests.post(URL, data=parametros)
 
-def Channel():
-    IMAGE_URL = obtenerNSFW()
+
+def Channel(IMAGE_URL,CAPTION = ''):
     url = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
     payload = {
-        "chat_id": "@WaiFUNotSF",  # Usa '@nombre_del_canal' o '-1001234567890'
+        "chat_id": "@WaiFUNotSF",  # Usa '@nombre_del_canal' o 
         "photo": IMAGE_URL,
-        "caption": "NSFW Time bruh 😏"
+        "caption": CAPTION
     }
     response = requests.post(url, data=payload)
     return response
