@@ -117,8 +117,8 @@ def meme(max_intentos=4000):
         intentos += 1
 
     notify.Me("⚠️ Se agotaron los memes nuevos. Reposteando uno repetido...")
-    
-    return apis.meme_api()
+    t,u = apis.meme_respaldo()
+    return t,u
 
 def target(max_intentos=4000):
     setDB = 'set_waifus'
