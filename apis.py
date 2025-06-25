@@ -43,7 +43,7 @@ def obtenerNSFW():
 ################################################ LADO DE LOS MOMOS ######################################
 
 def meme_api():
-    sources = ["hatsunemiku","kasaneteto","frieren"]
+    sources = ["bluearchive","ZenlessZoneZero","hatsunemiku","kasaneteto","frieren"
     subreddit=random.choice(sources)
     
     url = f"https://meme-api.com/gimme/{subreddit}"
@@ -80,7 +80,7 @@ def es_imagen(post_data):
     return url.lower().endswith(extensiones_validas) and any(d in url for d in dominios_validos)
 
 def meme_respaldo():
-    subs = ["brainrot","perfectlycutscreams","hatsunemiku","kasaneteto","frieren"]
+    subs = ["bluearchive","ZenlessZoneZero","hatsunemiku","kasaneteto","frieren"]
     subreddit=random.choice(subs)
     
     url = f"https://www.reddit.com/r/{subreddit}/new/.json?limit=100"
