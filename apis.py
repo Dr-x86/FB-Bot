@@ -122,5 +122,3 @@ def meme_respaldo():
         notify.Me(f"MOMOS RESPALDO Error inesperado: {e}")
         print(f"MOMOS RESPALDO Error inesperado: {e}")
         
-u,t=books()
-print(u)
