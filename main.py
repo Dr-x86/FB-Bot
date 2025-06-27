@@ -165,7 +165,7 @@ if __name__ == "__main__":
         if(post_id == None):
             notify.Me("ADIVINA, NONE EN POST-ID :(")
             print(f" - URL: {url}")
-            exit()        
+            exit(1)        
         agregar(url,'set_waifus')
         
     if(numero == 2):
@@ -175,7 +175,7 @@ if __name__ == "__main__":
         if(post_id == None):
             notify.Me("ADIVINA, NONE EN POST-ID :(")
             print(f" - URL: {url}")
-            exit()
+            exit(1)
         comentar(post_id)
         agregar(url,'set_waifus')
     
@@ -187,7 +187,7 @@ if __name__ == "__main__":
         if(post_id == None):
             notify.Me("ADIVINA, NONE EN POST-ID :(")
             print(f" - URL: {url}, Title {title}")
-            exit()
+            exit(1)
         comentar(post_id)
         agregar(url,'set_memes')
         
