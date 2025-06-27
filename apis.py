@@ -58,7 +58,7 @@ def meme_api():
         if(not title or not url):
             return None, None
         
-        return title, meme_url
+        return meme_url,title
         
     except requests.exceptions.RequestException as req_err:
         notify.Me(f"Error de red o HTTP: {req_err}")
@@ -91,18 +91,21 @@ def meme_respaldo():
         
         urls = [p['data'] for p in posts if es_imagen(p['data'])]
         if(not urls):
-            print("No se encontraron momos hoy ... ")
+            print(" >> No se encontraron momos hoy ... ")
             return None, None
             
-        imagen_url = random.choice(urls)
-        title = imagen_url['title']
+        choice = random.choice(urls)
+        imagen_url = choice['url']
+        title = choice['title']
         
-        print(f"\n MOMOS RESPALDO \n Url: {imagen_url['url']} Title: {title}")
-        return title , imagen_url['url']
+        return imagen_url, title
     
     except requests.exceptions.RequestException as req_err:
         notify.Me(f"MOMOS RESPALDO Error de red o HTTP: {req_err}")
+        print(f"MOMOS RESPALDO Error de red o HTTP: {req_err}")
     except ValueError:
         notify.Me(f"MOMOS RESPALDO Error al decodificar JSON.")
+        print(f"MOMOS RESPALDO Error al decodificar JSON.")
     except Exception as e:
         notify.Me(f"MOMOS RESPALDO Error inesperado: {e}")
+        print(f"MOMOS RESPALDO Error inesperado: {e}")
