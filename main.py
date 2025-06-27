@@ -164,6 +164,7 @@ if __name__ == "__main__":
         post_id = subirPost(url,hashtags)
         if(post_id == None):
             notify.Me("ADIVINA, NONE EN POST-ID :(")
+            print(f" - URL: {url}")
             exit()        
         agregar(url,'set_waifus')
         
@@ -173,6 +174,7 @@ if __name__ == "__main__":
         post_id = subirPost(url)
         if(post_id == None):
             notify.Me("ADIVINA, NONE EN POST-ID :(")
+            print(f" - URL: {url}")
             exit()
         comentar(post_id)
         agregar(url,'set_waifus')
@@ -184,6 +186,7 @@ if __name__ == "__main__":
         post_id = subirPost(url,title)
         if(post_id == None):
             notify.Me("ADIVINA, NONE EN POST-ID :(")
+            print(f" - URL: {url}, Title {title}")
             exit()
         comentar(post_id)
         agregar(url,'set_memes')
