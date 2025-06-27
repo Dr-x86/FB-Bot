@@ -162,12 +162,18 @@ if __name__ == "__main__":
         url = waifu()
         hashtags = ia.solicitarTexto()
         post_id = subirPost(url,hashtags)
+        if(post_id == None):
+            notify.Me("ADIVINA, NONE EN POST-ID :(")
+            exit()        
         agregar(url,'set_waifus')
         
     if(numero == 2):
         print(" - Target")
         url = target()
         post_id = subirPost(url)
+        if(post_id == None):
+            notify.Me("ADIVINA, NONE EN POST-ID :(")
+            exit()
         comentar(post_id)
         agregar(url,'set_waifus')
     
@@ -176,6 +182,9 @@ if __name__ == "__main__":
         url,title= meme()
         print(f"\n TITULO: {title} URL: {url} \n")
         post_id = subirPost(url,titulo)
+        if(post_id == None):
+            notify.Me("ADIVINA, NONE EN POST-ID :(")
+            exit()
         comentar(post_id)
         agregar(url,'set_memes')
         
