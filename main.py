@@ -68,7 +68,7 @@ def waifu(max_intentos=4000):
     intentos = 0
 
     while intentos < max_intentos:
-        url = apis.obtener_waifu()
+        url,book = apis.books()
         
         if not url or not isinstance(url, str):
             # notify.Me(f"URL inválida obtenida: {url}, intento {intentos}")
@@ -78,7 +78,7 @@ def waifu(max_intentos=4000):
 
         try:
             if not verify(url, setDB):
-                return url
+                return url,book
         except Exception as e:
             notify.Me(f"Error al verificar URL en BD: {url}, error: {e}")
             print(f"Error al verificar URL en BD: {url}, error: {e}")
@@ -88,8 +88,8 @@ def waifu(max_intentos=4000):
     notify.Me("Posiblemente se han terminado las imágenes de la API Waifu. Reposteando una repetida...")
     print("Posiblemente se han terminado las imágenes de la API Waifu. Reposteando una repetida...")
     
-    url = apis.obtener_waifu()
-    return url
+    url,book = apis.books()
+    return url,book
     
 def meme(max_intentos=4000):
     setDB = 'set_memes'
@@ -157,38 +157,39 @@ def target(max_intentos=4000):
 
 if __name__ == "__main__":
     numero=random.randint(1,4)
+    numero = 1
     if(numero == 1):
         print(" - Waifu")
-        url = waifu()
-        hashtags = ia.solicitarTexto()
-        post_id = subirPost(url,hashtags)
+        url, book = waifu()
+        
+        post_id = subirPost(url,book)
         if(post_id == None):
             notify.Me("ADIVINA, NONE EN POST-ID :(")
             print(f" - URL: {url}")
             exit(1)        
         agregar(url,'set_waifus')
         
-    if(numero == 2):
-        print(" - Target")
-        url = target()
-        post_id = subirPost(url)
-        if(post_id == None):
-            notify.Me("ADIVINA, NONE EN POST-ID :(")
-            print(f" - URL: {url}")
-            exit(1)
-        comentar(post_id)
-        agregar(url,'set_waifus')
+    # if(numero == 2):
+        # print(" - Target")
+        # url = target()
+        # post_id = subirPost(url)
+        # if(post_id == None):
+            # notify.Me("ADIVINA, NONE EN POST-ID :(")
+            # print(f" - URL: {url}")
+            # exit(1)
+        # comentar(post_id)
+        # agregar(url,'set_waifus')
     
-    if(numero >= 3):
-        print(" - Meme")
-        url,title= meme()
-        print(f"\n TITULO: {title} URL: {url} \n")
-        post_id = subirPost(url,title)
-        if(post_id == None):
-            notify.Me("ADIVINA, NONE EN POST-ID :(")
-            print(f" - URL: {url}, Title {title}")
-            exit(1)
-        comentar(post_id)
-        agregar(url,'set_memes')
+    # if(numero >= 3):
+        # print(" - Meme")
+        # url,title= meme()
+        # print(f"\n TITULO: {title} URL: {url} \n")
+        # post_id = subirPost(url,title)
+        # if(post_id == None):
+            # notify.Me("ADIVINA, NONE EN POST-ID :(")
+            # print(f" - URL: {url}, Title {title}")
+            # exit(1)
+        # comentar(post_id)
+        # agregar(url,'set_memes')
         
     print("\n>>> PROGRAMA FINALIZADO\n")

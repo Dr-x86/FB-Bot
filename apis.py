@@ -4,6 +4,18 @@ import random
 
 # print(">>> SCRIPT INICIADO")
 
+def books():
+    url =  'https://api.senpy.club/v2/random'
+    try:
+        response = requests.get(url)
+        imagen = response.json()['image']
+        book = response.json()['language']
+        return imagen, book
+    except Exception as e:
+        print(f"ERROR: {e}")
+        notify.Me(f"ERROR API BOOKS :{e}")
+    return None,None
+
 def obtener_waifu(respaldo=False):
     url = "https://api.waifu.pics/sfw/waifu"
     try:
@@ -109,3 +121,6 @@ def meme_respaldo():
     except Exception as e:
         notify.Me(f"MOMOS RESPALDO Error inesperado: {e}")
         print(f"MOMOS RESPALDO Error inesperado: {e}")
+        
+u,t=books()
+print(u)
