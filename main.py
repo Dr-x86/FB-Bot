@@ -154,14 +154,11 @@ def target(max_intentos=4000):
     url = apis.solicitar_waifu()
     return url
 
-
 if __name__ == "__main__":
     numero=random.randint(1,4)
-    numero = 1
     if(numero == 1):
         print(" - Waifu")
         url, book = waifu()
-        
         post_id = subirPost(url,book)
         if(post_id == None):
             notify.Me("ADIVINA, NONE EN POST-ID :(")
@@ -169,27 +166,29 @@ if __name__ == "__main__":
             exit(1)        
         agregar(url,'set_waifus')
         
-    # if(numero == 2):
-        # print(" - Target")
-        # url = target()
-        # post_id = subirPost(url)
-        # if(post_id == None):
-            # notify.Me("ADIVINA, NONE EN POST-ID :(")
-            # print(f" - URL: {url}")
-            # exit(1)
-        # comentar(post_id)
-        # agregar(url,'set_waifus')
+    if(numero == 2):
+        print(" - Target")
+        url = target()
+        post_id = subirPost(url)
+        if(post_id == None):
+            notify.Me("ADIVINA, NONE EN POST-ID :(")
+            print(f" - URL: {url}")
+            exit(1)
+        
+        comentar(post_id)
+        agregar(url,'set_waifus')
     
-    # if(numero >= 3):
-        # print(" - Meme")
-        # url,title= meme()
-        # print(f"\n TITULO: {title} URL: {url} \n")
-        # post_id = subirPost(url,title)
-        # if(post_id == None):
-            # notify.Me("ADIVINA, NONE EN POST-ID :(")
-            # print(f" - URL: {url}, Title {title}")
-            # exit(1)
-        # comentar(post_id)
-        # agregar(url,'set_memes')
+    if(numero >= 3):
+        print(" - Meme")
+        url,title= meme()
+        print(f"\n TITULO: {title} URL: {url} \n")
+        post_id = subirPost(url,title)
+        if(post_id == None):
+            notify.Me("ADIVINA, NONE EN POST-ID :(")
+            print(f" - URL: {url}, Title {title}")
+            exit(1)
+        
+        comentar(post_id)
+        agregar(url,'set_memes')
         
     print("\n>>> PROGRAMA FINALIZADO\n")
