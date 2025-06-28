@@ -155,8 +155,8 @@ def target(max_intentos=4000):
     return url
 
 if __name__ == "__main__":
-    numero=random.randint(1,4)
-    if(numero == 1):
+    numero=random.randint(1,5)
+    if(numero == 1 or numero == 2):
         print(" - Waifu")
         url, book = waifu()
         post_id = subirPost(url,book)
@@ -166,7 +166,7 @@ if __name__ == "__main__":
             exit(1)        
         agregar(url,'set_waifus')
         
-    if(numero == 2):
+    if(numero == 3):
         print(" - Target")
         url = target()
         post_id = subirPost(url)
@@ -178,7 +178,7 @@ if __name__ == "__main__":
         comentar(post_id)
         agregar(url,'set_waifus')
     
-    if(numero >= 3):
+    if(numero >= 4):
         print(" - Meme")
         url,title= meme()
         print(f"\n TITULO: {title} URL: {url} \n")
