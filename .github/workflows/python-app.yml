@@ -2,7 +2,7 @@ name: Run Python script every 1 hour
 
 on:
   schedule:
-    - cron: '5 */5 * * *' 
+    - cron: '5 */3 * * *' 
   workflow_dispatch:
 
 jobs:
