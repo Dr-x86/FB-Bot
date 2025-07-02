@@ -154,31 +154,31 @@ def target(max_intentos=4000):
     url = apis.solicitar_waifu()
     return url
 
-if __name__ == "__main__":
-    numero=random.randint(1,3)
-    if(numero == 1):
+if __name__ == "__main__":        
         print(" - Waifu")
         url, book = waifu()
         post_id = subirPost(url,"Programming Book: " + book)
         if(post_id == None):
             notify.Me("ADIVINA, NONE EN POST-ID :(")
             print(f" - URL: {url}")
-            exit(1)        
-        agregar(url,'set_waifus')
+            print("ERROR EN WAIFU")    
+        else: 
+            agregar(url,'set_waifus')
         
-    if(numero == 2):
+        sleep(3)
         print(" - Target")
         url = target()
         post_id = subirPost(url)
         if(post_id == None):
             notify.Me("ADIVINA, NONE EN POST-ID :(")
             print(f" - URL: {url}")
+            print("Error en Target")
+        else:
             exit(1)
-        
-        comentar(post_id)
-        agregar(url,'set_waifus')
-    
-    if(numero == 3):
+            comentar(post_id)
+            agregar(url,'set_waifus')
+
+        sleep(3)
         print(" - Meme")
         url,title= meme()
         print(f"\n TITULO: {title} URL: {url} \n")
@@ -186,9 +186,9 @@ if __name__ == "__main__":
         if(post_id == None):
             notify.Me("ADIVINA, NONE EN POST-ID :(")
             print(f" - URL: {url}, Title {title}")
-            exit(1)
-        
-        comentar(post_id)
-        agregar(url,'set_memes')
+            print("Error en Memes")
+        else:
+            comentar(post_id)
+            agregar(url,'set_memes')
         
     print("\n>>> PROGRAMA FINALIZADO\n")
