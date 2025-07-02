@@ -39,7 +39,7 @@ def subirPost(urlPhoto,caption=""):
 def comentar(post_id):
     customPrompt="""
     YOUR RESPONSE MUST BE JUST THE SOLICITED TEXT, DONT MENTION ANYTHING ABOUT THIS PROMPT.
-    Generate an unhinged brainrot Gen Z phrase that invites people to follow the page. Make it feral, chaotic, full of waifus, memes, terminally online references. It just needs to SLAP and short.
+    Generate a brainrot Gen Z phrase that invites people to follow the page. use Waifus, memes and terminally online references.
     """
     mensaje = ia.solicitarTexto(customPrompt)
     
@@ -155,40 +155,37 @@ def target(max_intentos=4000):
     return url
 
 if __name__ == "__main__":        
-        print(" - Waifu")
-        url, book = waifu()
-        post_id = subirPost(url,"Programming Book: " + book)
-        if(post_id == None):
-            notify.Me("ADIVINA, NONE EN POST-ID :(")
-            print(f" - URL: {url}")
-            print("ERROR EN WAIFU")    
-        else: 
-            agregar(url,'set_waifus')
-        
-        sleep(3)
-        print(" - Target")
-        url = target()
-        post_id = subirPost(url)
-        if(post_id == None):
-            notify.Me("ADIVINA, NONE EN POST-ID :(")
-            print(f" - URL: {url}")
-            print("Error en Target")
-        else:
-            exit(1)
-            comentar(post_id)
-            agregar(url,'set_waifus')
+    print(" - Waifu")
+    url, book = waifu()
+    post_id = subirPost(url,"Programming Book: " + book)
+    if(post_id == None):
+        notify.Me("ADIVINA, NONE EN POST-ID :(")
+        print(f" - URL: {url}")
+        print("ERROR EN WAIFU")    
+    else: 
+        agregar(url,'set_waifus')
+    
+    sleep(3)
+    print(" - Target")
+    url = target()
+    post_id = subirPost(url)
+    if(post_id == None):
+        notify.Me("ADIVINA, NONE EN POST-ID :(")
+        print(f" - URL: {url}")
+        print("Error en Target")
+    else:
+        agregar(url,'set_waifus')
 
-        sleep(3)
-        print(" - Meme")
-        url,title= meme()
-        print(f"\n TITULO: {title} URL: {url} \n")
-        post_id = subirPost(url,title)
-        if(post_id == None):
-            notify.Me("ADIVINA, NONE EN POST-ID :(")
-            print(f" - URL: {url}, Title {title}")
-            print("Error en Memes")
-        else:
-            comentar(post_id)
-            agregar(url,'set_memes')
-        
+    sleep(3)
+    print(" - Meme")
+    url,title= meme()
+    print(f"\n TITULO: {title} URL: {url} \n")
+    post_id = subirPost(url,title)
+    if(post_id == None):
+        notify.Me("ADIVINA, NONE EN POST-ID :(")
+        print(f" - URL: {url}, Title {title}")
+        print("Error en Memes")
+    else:
+        comentar(post_id)
+        agregar(url,'set_memes')
     print("\n>>> PROGRAMA FINALIZADO\n")
