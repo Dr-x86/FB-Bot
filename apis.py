@@ -68,7 +68,7 @@ def meme_api():
         title = data.get('title')
         meme_url = data.get('url')
         
-        if(not title or not url):
+        if(not url):
             return None, None
         
         return meme_url,title

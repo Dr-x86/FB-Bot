@@ -178,10 +178,14 @@ if __name__ == "__main__":
 
     sleep(3)
     print(" - Meme")
-    url,title= meme()
+    url,title = meme()
+    if(title == None):
+        title = ""
+    
     post_id = subirPost(url,title)
+    
     if(post_id == None):
-        notify.Me("ADIVINA, NONE EN POST-ID :(")
+        notify.Me("")
         print(f" - URL: {url}, Title {title}")
         print("Error en Memes")
     else:
