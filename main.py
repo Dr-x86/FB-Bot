@@ -28,12 +28,7 @@ def subirPost(urlPhoto,caption=""):
         'url':urlPhoto
     }
     response = requests.post(url, data=data)
-    
-    if response.status_code == 200:
-        return response.json()['id']
-    else:
-        notify.Me(f"Error al subir post {response.json()}")
-    return None
+    return response
 
 
 def comentar(post_id):
@@ -80,7 +75,7 @@ def waifu(max_intentos=4000):
             if not verify(url, setDB):
                 return url,book
         except Exception as e:
-            notify.Me(f"Error al verificar URL en BD: {url}, error: {e}")
+            # notify.Me(f"Error al verificar URL en BD: {url}, error: {e}")
             print(f"Error al verificar URL en BD: {url}, error: {e}")
 
         intentos += 1
@@ -100,7 +95,7 @@ def meme(max_intentos=4000):
         url, title = apis.meme_api()
 
         if not url or not isinstance(url, str):
-            notify.Me(f"Meme inválido en intento {intentos}: {url}")
+            # notify.Me(f"Meme inválido en intento {intentos}: {url}")
             print(f"Meme inválido en intento {intentos}: {url}")
             intentos += 1
             continue
@@ -109,7 +104,7 @@ def meme(max_intentos=4000):
             if not verify(url, setDB):
                 return (url, title)
         except Exception as e:
-            notify.Me(f"Error al verificar meme en BD: {e}")
+            # notify.Me(f"Error al verificar meme en BD: {e}")
             print(f"Error al verificar meme en BD: {e}")
 
         intentos += 1
@@ -128,13 +123,13 @@ def target(max_intentos=4000):
         try:
             url = apis.solicitar_waifu()
         except Exception as e:
-            notify.Me(f"Error solicitando waifu específica: {e}")
+            # notify.Me(f"Error solicitando waifu específica: {e}")
             print(f"Error solicitando waifu específica: {e}")
             intentos += 1
             continue
 
         if not url or not isinstance(url, str):
-            notify.Me(f"URL inválida en intento {intentos}: {url}")
+            # notify.Me(f"URL inválida en intento {intentos}: {url}")
             print(f"URL inválida en intento {intentos}: {url}")
             intentos += 1
             continue
@@ -143,7 +138,7 @@ def target(max_intentos=4000):
             if not verify(url, setDB):
                 return url
         except Exception as e:
-            notify.Me(f"Error al verificar URL waifu 2: {e}")
+            # notify.Me(f"Error al verificar URL waifu 2: {e}")
             print(f"Error al verificar URL waifu 2: {e}")
 
         intentos += 1
@@ -155,40 +150,34 @@ def target(max_intentos=4000):
     return url
 
 if __name__ == "__main__":        
+    
     print(" - Waifu")
     url, book = waifu()
-    post_id = subirPost(url,"Programming Book: " + book)
-    if(post_id == None):
-        notify.Me("ADIVINA, NONE EN POST-ID :(")
-        print(f" - URL: {url}")
-        print("ERROR EN WAIFU")    
-    else: 
+    response = subirPost(url,"Programming Book: " + book)
+    if(response.status_code==200):
         agregar(url,'set_waifus')
+    else:
+        notify.Me(f"ERROR - Waifu books - tipo: {response.json()} \nURL: {url}")
     
     sleep(3)
     print(" - Target")
     url = target()
-    post_id = subirPost(url)
-    if(post_id == None):
-        notify.Me("ADIVINA, NONE EN POST-ID :(")
-        print(f" - URL: {url}")
-        print("Error en Target")
-    else:
+    response = subirPost(url)
+    if(response.status_code == 200):
         agregar(url,'set_waifus')
+    else:
+        notify.Me(f"ERROR - Target - tipo: {response.json()} \nURL: {url}")
 
     sleep(3)
     print(" - Meme")
     url,title = meme()
     if(title == None):
         title = ""
-    
-    post_id = subirPost(url,title)
-    
-    if(post_id == None):
-        notify.Me("")
-        print(f" - URL: {url}, Title {title}")
-        print("Error en Memes")
-    else:
-        comentar(post_id)
+    response = subirPost(url,title)
+    if(response.status_code==200):
         agregar(url,'set_memes')
+    else:
+        notify.Me(f"ERROR - Meme - tipo: {response.json()} \nURL:{url}")
+    
+    
     print("\n>>> PROGRAMA FINALIZADO\n")

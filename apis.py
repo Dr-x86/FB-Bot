@@ -12,8 +12,8 @@ def books():
         book = response.json()['language']
         return imagen, book
     except Exception as e:
-        print(f"ERROR: {e}")
-        notify.Me(f"ERROR API BOOKS :{e}")
+        print(f"ERROR API BOOKS: {e}")
+        # notify.Me(f"ERROR API BOOKS :{e}")
     return None,None
 
 def obtener_waifu(respaldo=False):
@@ -24,7 +24,7 @@ def obtener_waifu(respaldo=False):
         data = response.json()
         return data["url"]
     except Exception as e:
-        notify.Me(f"Error con API {url}: {e}")
+        print(f"Error con API 1 {url}: {e}")
         if not respaldo:
             return solicitar_waifu(respaldo=True)
         return "None"
@@ -37,7 +37,7 @@ def solicitar_waifu(respaldo=False):
         response.raise_for_status()
         return response.json()['images'][0]['url']
     except Exception as e:
-        notify.Me(f"Error con API {url}: {e}")
+        print(f"Error con API Waifu 2 {url}: {e}")
         if not respaldo:
             return obtener_waifu(respaldo=True)
         return "None"
@@ -49,12 +49,12 @@ def obtenerNSFW():
         response.raise_for_status()
         return response.json()["url"]
     except Exception as e:
-        notify.Me(f"Error en la API {url}: {e}")
+        print(f"Error en la API NSFW {url}: {e}")
         return "None"
         
 ################################################ LADO DE LOS MOMOS ######################################
 
-sources = ["KujouAlisaMikhailovna","konosuba","bocchitherock","ImaginaryGaming","hatsunemiku","hatsune","kasaneteto","frieren"]
+sources = ["konosuba","ImaginaryGaming","hatsune","kasaneteto","frieren"]
 
 def meme_api():
     subreddit=random.choice(sources)
@@ -74,11 +74,11 @@ def meme_api():
         return meme_url,title
         
     except requests.exceptions.RequestException as req_err:
-        notify.Me(f"Error de red o HTTP: {req_err}")
+        print(f"Error de red o HTTP: {req_err}")
     except ValueError:
-        notify.Me("Error al decodificar JSON.")
+        print("Error al decodificar JSON.")
     except Exception as e:
-        notify.Me(f"Error inesperado: {e}")
+        print(f"Error inesperado: {e}")
     
     return None,None
     
@@ -112,12 +112,12 @@ def meme_respaldo():
         return imagen_url, title
     
     except requests.exceptions.RequestException as req_err:
-        notify.Me(f"MOMOS RESPALDO Error de red o HTTP: {req_err}")
+        # notify.Me(f"MOMOS RESPALDO Error de red o HTTP: {req_err}")
         print(f"MOMOS RESPALDO Error de red o HTTP: {req_err}")
     except ValueError:
-        notify.Me(f"MOMOS RESPALDO Error al decodificar JSON.")
+        # notify.Me(f"MOMOS RESPALDO Error al decodificar JSON.")
         print(f"MOMOS RESPALDO Error al decodificar JSON.")
     except Exception as e:
-        notify.Me(f"MOMOS RESPALDO Error inesperado: {e}")
+        # notify.Me(f"MOMOS RESPALDO Error inesperado: {e}")
         print(f"MOMOS RESPALDO Error inesperado: {e}")
         
