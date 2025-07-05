@@ -159,14 +159,14 @@ if __name__ == "__main__":
     else:
         notify.Me(f"ERROR - Waifu books - tipo: {response.json()} \nURL: {url}")
     
-    sleep(3)
-    print(" - Target")
-    url = target()
-    response = subirPost(url)
-    if(response.status_code == 200):
-        agregar(url,'set_waifus')
-    else:
-        notify.Me(f"ERROR - Target - tipo: {response.json()} \nURL: {url}")
+    # sleep(3)
+    # print(" - Target")
+    # url = target()
+    # response = subirPost(url)
+    # if(response.status_code == 200):
+        # agregar(url,'set_waifus')
+    # else:
+        # notify.Me(f"ERROR - Target - tipo: {response.json()} \nURL: {url}")
 
     sleep(3)
     print(" - Meme")
